@@ -1,0 +1,14 @@
+---
+- name: TRIAL
+  hosts: trial
+  remote_user: mayur
+#  gather_facts: true
+#  become_method: true
+#  become: root
+  sudo: yes
+  tasks:
+   - name: Updates apt cache
+     action: apt update_cache=true #apt-get update
+
+#   - name: install eclipse
+#s    apt: name=eclipse state=latest update_cache=yes #apt-get install eclipse
