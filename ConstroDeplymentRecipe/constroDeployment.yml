@@ -1,0 +1,26 @@
+---
+- name: Constro Deployment
+  hosts: webservers
+  become: true
+  become_user: root
+  tasks:
+   - name: GIT PULL
+     git: repo=git@github.com:ansible/ansible.git dest= /usr/share/nginx/html/share
+     sudo_user: vagrant
+  
+   - name: execute php artisan migrate
+     command:  chdir=/usr/share/nginx/html/share/mco php artisan migrate
+   
+   - name: execute command for seeders
+     command: chdir=/usr/share/nginx/html/share/mco php artisan db:seed #--class=UpdateBillStatusesTableSeeder
+
+   - name: execute npm run production
+     shell: chdir=/usr/share/nginx/html/share/mco sudo npm run production
+     
+   - name: execute clear cache
+     command: chdir=/usr/share/nginx/html/share/mco php artisan cache:clear
+     
+   - name: install composer
+     apt: name=composer state=present update_cache=yes
+    
+      
